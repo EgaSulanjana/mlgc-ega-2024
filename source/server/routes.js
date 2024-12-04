@@ -8,7 +8,7 @@ const routes = [
     handler: postPredictHandler,
     options: {
       payload: {
-        allow: "multipart/form-data", // Mengizinkan file upload
+        allow: "multipart/form-data",
         multipart: true,
         maxBytes: 1000000,
       },

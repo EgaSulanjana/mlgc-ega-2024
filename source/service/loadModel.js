@@ -2,7 +2,6 @@ const tf = require("@tensorflow/tfjs-node");
 
 async function loadModel() {
   try {
-    // Memuat model TensorFlow dari URL
     return await tf.loadGraphModel(
       "https://storage.googleapis.com/bucket-model-mlgc/model/model.json"
     );

@@ -12,19 +12,17 @@ async function postPredictHandler(request, h) {
     model,
     image
   );
-  // Generate ID dan timestamp
+
   const id = crypto.randomUUID();
   const createdAt = new Date().toISOString();
-  // Siapkan data untuk disimpan
   const data = {
     id,
     result: label,
     suggestion,
     createdAt,
   };
-  // Simpan data ke Firestore
+
   await storeData(id, data);
-  // Kirim respons kembali ke klien
   return h
     .response({
       status: "success",
@@ -36,19 +34,15 @@ async function postPredictHandler(request, h) {
 
 const predictHistories = async (_request, h) => {
   try {
-    // Mengambil jalur file kredensial
     const pathKey = path.resolve(process.env.FIRESTORE_KEY_PATH);
 
-    // Inisialisasi instance Firestore
     const db = new Firestore({
-      projectId: "submissionmlgc-egasulanjana", // ID proyek Google Cloud
-      keyFilename: pathKey, // Jalur ke file kredensial
+      projectId: "submissionmlgc-egasulanjana",
+      keyFilename: pathKey,
     });
 
-    // Ambil semua dokumen dari koleksi "predictions"
     const snapshot = await db.collection("predictions").get();
 
-    // Jika koleksi kosong, kirim respons kosong
     if (snapshot.empty) {
       return h
         .response({
@@ -58,18 +52,16 @@ const predictHistories = async (_request, h) => {
         .code(200);
     }
 
-    // Format data hasil query
     const data = snapshot.docs.map((doc) => ({
-      id: doc.id, // ID dokumen
+      id: doc.id,
       history: {
-        result: doc.data().result, // hasil prediksi
-        createdAt: doc.data().createdAt, // waktu pembuatan dokumen
-        suggestion: doc.data().suggestion, // saran berdasarkan hasil prediksi
-        id: doc.id, // ID dokumen untuk bagian history
+        result: doc.data().result,
+        createdAt: doc.data().createdAt,
+        suggestion: doc.data().suggestion,
+        id: doc.id,
       },
     }));
 
-    // Kirim respons ke klien
     return h
       .response({
         status: "success",
@@ -77,7 +69,6 @@ const predictHistories = async (_request, h) => {
       })
       .code(200);
   } catch (error) {
-    // Tangani error dan kirimkan respons
     console.error(error);
     return h
       .response({
