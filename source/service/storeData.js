@@ -1,6 +1,5 @@
 const { Firestore } = require("@google-cloud/firestore");
 const path = require("path");
-// const filePath = ('../server/submissionmlgc-putriayu-36f69ac2160a.json');
 require("dotenv").config();
 
 // Mendapatkan path ke file kunci Firestore dari environment variable
